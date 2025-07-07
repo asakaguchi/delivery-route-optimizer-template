@@ -1,0 +1,214 @@
+---
+description: Streamlit モダンUI開発ガイド
+globs: "*.py", "main.py", "ui/*.py"
+alwaysApply: false
+---
+
+# Streamlit モダンUI開発ガイド
+
+## デザイン原則
+- **Streamlitっぽさを排除**し、プロフェッショナルなUIを実現
+- Material Design 3のガイドラインに準拠
+- Lucide Iconsを使用（絵文字は使わない）
+
+## カスタムテーマの実装
+
+```python
+import streamlit as st
+from streamlit_lucide import lucide
+
+# ページ設定
+st.set_page_config(
+    page_title="配送ルート最適化",
+    page_icon="🚚",  # ファビコンのみ絵文字使用
+    layout="wide"
+)
+
+# カスタムCSS
+st.markdown("""
+<style>
+    /* 全体のフォント設定 */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    
+    .stApp {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #f8f9fa;
+    }
+    
+    /* モダンなカード風コンテナ */
+    .custom-card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        margin-bottom: 24px;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    /* プライマリボタン */
+    .stButton > button {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-weight: 500;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .stButton > button:hover {
+        background: #1557b0;
+        box-shadow: 0 4px 12px rgba(26,115,232,0.3);
+        transform: translateY(-1px);
+    }
+    
+    /* セカンダリボタン */
+    .secondary-button > button {
+        background: white;
+        color: #1a73e8;
+        border: 1px solid #dadce0;
+    }
+    
+    .secondary-button > button:hover {
+        background: #f8f9fa;
+        border-color: #1a73e8;
+    }
+    
+    /* 入力フィールド */
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > select {
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+        transition: border-color 0.2s;
+    }
+    
+    .stTextInput > div > div > input:focus,
+    .stSelectbox > div > div > select:focus {
+        border-color: #1a73e8;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(26,115,232,0.1);
+    }
+    
+    /* タブスタイル */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 32px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 48px;
+        padding: 0 16px;
+        background-color: transparent;
+        border: none;
+        color: #5f6368;
+        font-weight: 500;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        color: #1a73e8;
+        border-bottom: 2px solid #1a73e8;
+    }
+    
+    /* プログレスバー */
+    .stProgress > div > div > div > div {
+        background-color: #1a73e8;
+    }
+    
+    /* サイドバー */
+    .css-1d391kg {
+        background-color: #ffffff;
+        border-right: 1px solid #e0e0e0;
+    }
+    
+    /* メトリクスカード */
+    [data-testid="metric-container"] {
+        background-color: white;
+        border: 1px solid #e0e0e0;
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+</style>
+""", unsafe_allow_html=True)
+```
+
+## UI構成例
+
+```python
+# ヘッダー部分
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("truck", size=32, color="#1a73e8")
+with col2:
+    st.markdown('<h1 style="margin: 0;">配送ルート最適化システム</h1>', 
+                unsafe_allow_html=True)
+
+# メインコンテンツ
+with st.container():
+    st.markdown('<div class="custom-card">', unsafe_allow_html=True)
+    
+    # アイコン付きセクションタイトル
+    col1, col2 = st.columns([0.05, 0.95])
+    with col1:
+        lucide("upload", size=20, color="#5f6368")
+    with col2:
+        st.markdown("### データアップロード")
+    
+    uploaded_file = st.file_uploader(
+        "配送先CSVファイルを選択",
+        type="csv",
+        help="配送先の名前、住所、緯度、経度を含むCSVファイル"
+    )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# 結果表示部分
+if results:
+    # メトリクスの表示
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        with st.container():
+            col_icon, col_text = st.columns([0.2, 0.8])
+            with col_icon:
+                lucide("map-pin", size=24, color="#1a73e8")
+            with col_text:
+                st.metric("配送先数", f"{len(points)}件")
+    
+    with col2:
+        with st.container():
+            col_icon, col_text = st.columns([0.2, 0.8])
+            with col_icon:
+                lucide("route", size=24, color="#1a73e8")
+            with col_text:
+                st.metric("総距離", f"{total_distance:.1f} km")
+    
+    with col3:
+        with st.container():
+            col_icon, col_text = st.columns([0.2, 0.8])
+            with col_icon:
+                lucide("clock", size=24, color="#1a73e8")
+            with col_text:
+                st.metric("推定時間", f"{estimated_time} 分")
+```
+
+## アイコン使用ガイド
+
+| 用途 | Lucideアイコン名 | 使用例 |
+|------|-----------------|--------|
+| アップロード | upload | ファイルアップロード |
+| 地図・位置 | map-pin, map | 配送先表示 |
+| ルート | route, navigation | ルート表示 |
+| 時間 | clock, timer | 時間表示 |
+| 設定 | settings, sliders | 設定画面 |
+| 実行 | play, zap | 実行ボタン |
+| 成功 | check-circle | 完了表示 |
+| エラー | alert-circle | エラー表示 |
+| 情報 | info | ヘルプ・情報 |
+| ダウンロード | download | 結果のダウンロード |
+```
+

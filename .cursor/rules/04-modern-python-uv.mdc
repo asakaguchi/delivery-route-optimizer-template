@@ -1,0 +1,149 @@
+---
+description: モダンPython開発環境 with uv
+alwaysApply: true
+---
+
+# モダンPython開発環境 with uv
+
+## 必須ツール
+- **uv**: 統合パッケージマネージャー（Rust製、超高速）
+- Python 3.11以上（uvが自動管理）
+- Ruff: リンター＆フォーマッター
+
+## プロジェクト初期化
+```bash
+# uvプロジェクトの初期化
+uv init
+
+# Pythonバージョンの指定
+uv python pin 3.11
+
+# 依存関係の追加
+uv add streamlit folium pandas numpy streamlit-lucide
+```
+
+## プロジェクト構造
+```
+delivery-route-optimizer/
+├── pyproject.toml        # uvの設定ファイル
+├── .python-version       # Pythonバージョン指定
+├── src/
+│   ├── __init__.py
+│   ├── main.py          # エントリーポイント
+│   ├── route_optimizer/ # ビジネスロジック
+│   └── ui/              # UI関連
+├── tests/               # テストコード
+└── data/                # サンプルデータ
+```
+
+## 開発コマンド
+```bash
+# 依存関係の追加
+uv add パッケージ名
+
+# 開発用依存関係
+uv add --dev pytest ruff
+
+# アプリケーション実行
+uv run streamlit run src/main.py
+
+# テスト実行
+uv run pytest
+
+# コードフォーマット
+uv run ruff format .
+
+# リント
+uv run ruff check .
+```
+
+## 型ヒントの活用
+```python
+from typing import List, Dict, Tuple
+
+def calculate_route(
+    points: List[Dict[str, float]]
+) -> Tuple[List[int], float]:
+    """配送ルートを計算する
+    
+    Args:
+        points: 配送先のリスト
+        
+    Returns:
+        最適な訪問順序と総距離
+    """
+    pass
+```
+
+# モダンPython開発環境 with uv
+
+## 必須ツール
+- **uv**: 統合パッケージマネージャー（Rust製、超高速）
+- Python 3.11以上（uvが自動管理）
+- Ruff: リンター＆フォーマッター
+
+## プロジェクト初期化
+```bash
+# uvプロジェクトの初期化
+uv init
+
+# Pythonバージョンの指定
+uv python pin 3.11
+
+# 依存関係の追加
+uv add streamlit folium pandas numpy streamlit-lucide
+```
+
+## プロジェクト構造
+```
+delivery-route-optimizer/
+├── pyproject.toml        # uvの設定ファイル
+├── .python-version       # Pythonバージョン指定
+├── src/
+│   ├── __init__.py
+│   ├── main.py          # エントリーポイント
+│   ├── route_optimizer/ # ビジネスロジック
+│   └── ui/              # UI関連
+├── tests/               # テストコード
+└── data/                # サンプルデータ
+```
+
+## 開発コマンド
+```bash
+# 依存関係の追加
+uv add パッケージ名
+
+# 開発用依存関係
+uv add --dev pytest ruff
+
+# アプリケーション実行
+uv run streamlit run src/main.py
+
+# テスト実行
+uv run pytest
+
+# コードフォーマット
+uv run ruff format .
+
+# リント
+uv run ruff check .
+```
+
+## 型ヒントの活用
+```python
+from typing import List, Dict, Tuple
+
+def calculate_route(
+    points: List[Dict[str, float]]
+) -> Tuple[List[int], float]:
+    """配送ルートを計算する
+    
+    Args:
+        points: 配送先のリスト
+        
+    Returns:
+        最適な訪問順序と総距離
+    """
+    pass
+```
+

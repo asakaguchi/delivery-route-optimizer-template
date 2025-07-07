@@ -1,0 +1,242 @@
+---
+description: エラー処理ガイド
+globs: **/*.py
+alwaysApply: false
+---
+
+# エラー処理ガイド
+
+## 基本原則
+- ユーザーフレンドリーなエラーメッセージを表示
+- エラーの原因と解決方法を明確に示す
+- 技術的な詳細はログに記録
+
+## Streamlitでのエラー表示
+
+```python
+import streamlit as st
+from streamlit_lucide import lucide
+import logging
+
+# ロガーの設定
+logger = logging.getLogger(__name__)
+
+def safe_file_upload():
+    """安全なファイルアップロード処理"""
+    try:
+        uploaded_file = st.file_uploader("CSVファイルを選択", type="csv")
+        
+        if uploaded_file is not None:
+            # ファイルサイズチェック
+            if uploaded_file.size > 10 * 1024 * 1024:  # 10MB
+                st.error(
+                    "ファイルサイズが大きすぎます。10MB以下のファイルを選択してください。"
+                )
+                return None
+            
+            # ファイル読み込み
+            df = pd.read_csv(uploaded_file)
+            
+            # 必須カラムチェック
+            required_columns = ['名前', '住所', '緯度', '経度']
+            missing_columns = set(required_columns) - set(df.columns)
+            
+            if missing_columns:
+                st.error(f"""
+                必須カラムが不足しています：{', '.join(missing_columns)}
+                
+                CSVファイルには以下のカラムが必要です：
+                - 名前: 配送先の名称
+                - 住所: 配送先の住所
+                - 緯度: 配送先の緯度（数値）
+                - 経度: 配送先の経度（数値）
+                """)
+                return None
+            
+            return df
+            
+    except pd.errors.EmptyDataError:
+        st.error("ファイルが空です。データが含まれているファイルを選択してください。")
+    except pd.errors.ParserError as e:
+        st.error(f"CSVファイルの読み込みに失敗しました。ファイル形式を確認してください。")
+        logger.error(f"CSV parsing error: {e}")
+    except Exception as e:
+        st.error("予期しないエラーが発生しました。しばらく待ってから再度お試しください。")
+        logger.exception("Unexpected error in file upload")
+        
+    return None
+```
+
+## エラーメッセージの表示方法
+
+```python
+# エラー表示（アイコン付き）
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("alert-circle", size=24, color="#d32f2f")
+with col2:
+    st.error("エラーメッセージ")
+
+# 警告表示
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("alert-triangle", size=24, color="#f57c00")
+with col2:
+    st.warning("警告メッセージ")
+
+# 情報表示
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("info", size=24, color="#1976d2")
+with col2:
+    st.info("情報メッセージ")
+
+# 成功表示
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("check-circle", size=24, color="#388e3c")
+with col2:
+    st.success("成功メッセージ")
+```
+
+## 一般的なエラーケース
+
+1. **ファイル関連**
+   - ファイルが見つからない
+   - ファイル形式が不正
+   - ファイルサイズが大きすぎる
+
+2. **データ関連**
+   - 必須項目の不足
+   - データ型の不一致
+   - 範囲外の値
+
+3. **ネットワーク関連**
+   - API接続エラー
+   - タイムアウト
+   - 認証エラー
+
+4. **計算関連**
+   - ゼロ除算
+   - メモリ不足
+   - 計算時間超過
+```
+
+# エラー処理ガイド
+
+## 基本原則
+- ユーザーフレンドリーなエラーメッセージを表示
+- エラーの原因と解決方法を明確に示す
+- 技術的な詳細はログに記録
+
+## Streamlitでのエラー表示
+
+```python
+import streamlit as st
+from streamlit_lucide import lucide
+import logging
+
+# ロガーの設定
+logger = logging.getLogger(__name__)
+
+def safe_file_upload():
+    """安全なファイルアップロード処理"""
+    try:
+        uploaded_file = st.file_uploader("CSVファイルを選択", type="csv")
+        
+        if uploaded_file is not None:
+            # ファイルサイズチェック
+            if uploaded_file.size > 10 * 1024 * 1024:  # 10MB
+                st.error(
+                    "ファイルサイズが大きすぎます。10MB以下のファイルを選択してください。"
+                )
+                return None
+            
+            # ファイル読み込み
+            df = pd.read_csv(uploaded_file)
+            
+            # 必須カラムチェック
+            required_columns = ['名前', '住所', '緯度', '経度']
+            missing_columns = set(required_columns) - set(df.columns)
+            
+            if missing_columns:
+                st.error(f"""
+                必須カラムが不足しています：{', '.join(missing_columns)}
+                
+                CSVファイルには以下のカラムが必要です：
+                - 名前: 配送先の名称
+                - 住所: 配送先の住所
+                - 緯度: 配送先の緯度（数値）
+                - 経度: 配送先の経度（数値）
+                """)
+                return None
+            
+            return df
+            
+    except pd.errors.EmptyDataError:
+        st.error("ファイルが空です。データが含まれているファイルを選択してください。")
+    except pd.errors.ParserError as e:
+        st.error(f"CSVファイルの読み込みに失敗しました。ファイル形式を確認してください。")
+        logger.error(f"CSV parsing error: {e}")
+    except Exception as e:
+        st.error("予期しないエラーが発生しました。しばらく待ってから再度お試しください。")
+        logger.exception("Unexpected error in file upload")
+        
+    return None
+```
+
+## エラーメッセージの表示方法
+
+```python
+# エラー表示（アイコン付き）
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("alert-circle", size=24, color="#d32f2f")
+with col2:
+    st.error("エラーメッセージ")
+
+# 警告表示
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("alert-triangle", size=24, color="#f57c00")
+with col2:
+    st.warning("警告メッセージ")
+
+# 情報表示
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("info", size=24, color="#1976d2")
+with col2:
+    st.info("情報メッセージ")
+
+# 成功表示
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    lucide("check-circle", size=24, color="#388e3c")
+with col2:
+    st.success("成功メッセージ")
+```
+
+## 一般的なエラーケース
+
+1. **ファイル関連**
+   - ファイルが見つからない
+   - ファイル形式が不正
+   - ファイルサイズが大きすぎる
+
+2. **データ関連**
+   - 必須項目の不足
+   - データ型の不一致
+   - 範囲外の値
+
+3. **ネットワーク関連**
+   - API接続エラー
+   - タイムアウト
+   - 認証エラー
+
+4. **計算関連**
+   - ゼロ除算
+   - メモリ不足
+   - 計算時間超過
+```
+

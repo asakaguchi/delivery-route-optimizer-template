@@ -1,0 +1,35 @@
+---
+description: Python コーディングスタイルガイド
+globs: "*.py"
+alwaysApply: true
+---
+
+# Python コーディングスタイルガイド
+
+## 基本原則
+- PEP8に準拠し、読みやすさを最優先とする
+- 初心者が理解しやすいコードを心がける
+
+## 命名規則
+- 変数名・関数名：snake_case（例：delivery_points）
+- クラス名：PascalCase（例：RouteOptimizer）
+- 定数：UPPER_SNAKE_CASE（例：MAX_DISTANCE）
+
+## コメント
+- 日本語で記述（初心者向けワークショップのため）
+- 処理の意図を説明（「何を」より「なぜ」）
+
+## インポート
+```python
+# 標準ライブラリ
+import os
+import sys
+
+# サードパーティ
+import streamlit as st
+import pandas as pd
+
+# ローカル
+from route_optimizer import optimize_route
+```
+
