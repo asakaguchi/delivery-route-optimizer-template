@@ -10,7 +10,7 @@ dependencies = [
     "streamlit-folium>=0.15.0",
     "pandas>=2.0.0",
     "numpy>=1.24.0",
-    "streamlit-lucide>=0.1.0",
+    "streamlit-antd-components>=0.3.2",
 ]
 
 [tool.uv]
