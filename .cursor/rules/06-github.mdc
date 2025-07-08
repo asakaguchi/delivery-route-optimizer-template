@@ -14,7 +14,18 @@ alwaysApply: false
 ### gh CLI基本コマンド
 ```bash
 # Issue作成（積極的に実行）
-gh issue create --title "タイトル" --body "本文" --label "enhancement"
+# 単純な本文の場合
+gh issue create --title "タイトル" --body "1行の本文"
+
+# 複数行本文の場合（HEREDOC必須）
+gh issue create --title "タイトル" --body "$(cat <<'EOF'
+## 概要
+複数行の本文
+
+## 詳細
+説明内容
+EOF
+)"
 
 # Issue一覧
 gh issue list
@@ -24,9 +35,10 @@ gh pr create --title "タイトル" --body "本文"
 ```
 
 ### 注意事項
+- **複数行本文はHEREDOC必須**: エラーを防ぐための基本ルール
 - **過度な権限チェックは不要**: 認証エラーが出たら対処するスタンス
 - **即座の実行**: 「権限があるかわからない」等の理由での拒否は避ける
-- **エラー時の対処**: 具体的な解決策を提示してリトライ
+- **エラー時の対処**: エラーが発生しても「問題ない」と判断せず、必ず対処
 
 ## Issue管理
 
@@ -55,14 +67,30 @@ gh pr create --title "タイトル" --body "本文"
 
 ### ラベル使用方法
 ```bash
-# 単一ラベル
-gh issue create --title "タイトル" --body "本文" --label "enhancement"
+# 単一ラベル（HEREDOCと組み合わせ）
+gh issue create --title "タイトル" --body "$(cat <<'EOF'
+## 概要
+詳細な説明
+EOF
+)" --label "enhancement"
 
-# 複数ラベル  
-gh issue create --title "タイトル" --body "本文" --label "enhancement,documentation"
+# 複数ラベル（HEREDOCと組み合わせ）  
+gh issue create --title "タイトル" --body "$(cat <<'EOF'
+## 概要
+詳細な説明
+EOF
+)" --label "enhancement,documentation"
 
-# ラベルなし（推奨：エラー回避）
-gh issue create --title "タイトル" --body "本文"
+# ラベルなし（推奨：エラー回避、HEREDOC使用）
+gh issue create --title "タイトル" --body "$(cat <<'EOF'
+## 概要
+詳細な説明
+
+## 完了条件
+- [ ] 条件1
+- [ ] 条件2
+EOF
+)"
 ```
 
 ### Issueテンプレート

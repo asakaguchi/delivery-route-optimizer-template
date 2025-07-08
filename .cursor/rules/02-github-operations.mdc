@@ -24,18 +24,39 @@ gh auth status
 ```
 
 2. **Issue作成**（積極的に実行）
-```bash
-# 推奨：ラベルなし（エラー回避）
-gh issue create --title "タイトル" --body "本文"
 
-# または適切なラベル付き
-gh issue create --title "タイトル" --body "本文" --label "enhancement"
+#### 🚨 重要：複数行本文のIssue作成時はHEREDOC必須
+**複数行の本文を含むIssue作成時は、必ずHEREDOCを使用してください。**
+
+```bash
+# 単純な1行本文の場合（ラベルなし推奨）
+gh issue create --title "タイトル" --body "1行の本文"
+
+# 複数行本文の場合：HEREDOC必須
+gh issue create --title "タイトル" --body "$(cat <<'EOF'
+## 概要
+複数行の
+詳細な説明
+
+## 完了条件
+- [ ] 条件1
+- [ ] 条件2
+EOF
+)"
 ```
 
-3. **成功確認**
+3. **成功確認（必須）**
 ```bash
+# 作成したIssueが表示されることを確認
 gh issue list --limit 5
+
+# エラーが発生した場合は「問題ない」と判断せず、必ず対処
 ```
+
+#### ⚠️ エラー時の対処
+- **エラーが発生したら必ず対処する**
+- 「問題ない」と勝手に判断しない
+- エラー内容を確認し、適切な修正を行う
 
 ### 推奨される対応
 
@@ -93,41 +114,88 @@ gh issue create --title "..." --body "..."
 ## 🎯 具体的なコマンド例
 
 ### 基本的なIssue作成
+
+#### ✅ 正しい例：HEREDOCを使用した複数行本文
 ```bash
 # 推奨：ラベルなし版（エラー回避）
 gh issue create \
   --title "[feat] CSVアップロード機能" \
-  --body "## 概要
+  --body "$(cat <<'EOF'
+## 概要
 Streamlitを使用してCSVファイルアップロード機能を実装
 
 ## 完了条件
 - [ ] file_uploaderウィジェットが動作する
 - [ ] CSVファイルのみアップロード可能
-- [ ] テストが通る"
+- [ ] テストが通る
+EOF
+)"
 
 # ラベル付き版（オプション）
+gh issue create \
+  --title "[feat] CSVアップロード機能" \
+  --body "$(cat <<'EOF'
+## 概要
+Streamlitを使用してCSVファイルアップロード機能を実装
+
+## 完了条件
+- [ ] file_uploaderウィジェットが動作する
+- [ ] CSVファイルのみアップロード可能
+- [ ] テストが通る
+EOF
+)" \
+  --label "enhancement"
+```
+
+#### ❌ 避けるべき例：HEREDOCなしの複数行
+```bash
+# 悪い例：改行を含む本文を直接記述（エラーの原因）
 gh issue create \
   --title "[feat] CSVアップロード機能" \
   --body "## 概要
 Streamlitを使用してCSVファイルアップロード機能を実装
 
 ## 完了条件
-- [ ] file_uploaderウィジェットが動作する
-- [ ] CSVファイルのみアップロード可能
-- [ ] テストが通る" \
-  --label "enhancement"
+- [ ] file_uploaderウィジェットが動作する"
 ```
 
 ### 複数Issueの一括作成
 ```bash
-# Issue 1（推奨：ラベルなし）
-gh issue create --title "[feat] CSV読み込み機能" --body "..."
+# Issue 1（HEREDOC使用）
+gh issue create --title "[feat] CSV読み込み機能" --body "$(cat <<'EOF'
+## 概要
+CSVファイルの読み込み機能を実装
 
-# Issue 2（推奨：ラベルなし）
-gh issue create --title "[feat] 地図表示機能" --body "..."
+## 完了条件
+- [ ] CSV読み込み処理の実装
+- [ ] エラーハンドリング
+- [ ] テストの追加
+EOF
+)"
 
-# Issue 3（推奨：ラベルなし）
-gh issue create --title "[feat] ルート計算機能" --body "..."
+# Issue 2（HEREDOC使用）
+gh issue create --title "[feat] 地図表示機能" --body "$(cat <<'EOF'
+## 概要
+地図上に配送先を表示する機能を実装
+
+## 完了条件
+- [ ] 地図の表示
+- [ ] マーカーの配置
+- [ ] ズーム・パン機能
+EOF
+)"
+
+# Issue 3（HEREDOC使用）
+gh issue create --title "[feat] ルート計算機能" --body "$(cat <<'EOF'
+## 概要
+最適な配送ルートを計算する機能を実装
+
+## 完了条件
+- [ ] ルート計算アルゴリズムの実装
+- [ ] 計算結果の表示
+- [ ] パフォーマンステスト
+EOF
+)"
 ```
 
 ## 💡 成功のコツ
@@ -136,13 +204,20 @@ gh issue create --title "[feat] ルート計算機能" --body "..."
 - 依頼を受けたら即座に実行
 - 確認作業は最小限に
 
-### 2. 適切なエラーハンドリング
-- エラーが発生したら具体的な対処法を提示
+### 2. HEREDOCの徹底使用
+- **複数行本文は必ずHEREDOCを使用**
+- エラーを防ぐための基本ルール
+- 成功率を大幅に向上
+
+### 3. 適切なエラーハンドリング
+- **エラーが発生したら必ず対処する**
+- **「問題ない」と勝手に判断しない**
 - 必要に応じてリトライ
 
-### 3. フィードバックの提供
+### 4. フィードバックの提供
 - 作成したIssueのURLを表示
 - 成功/失敗の明確な報告
+- エラー時は具体的な内容を共有
 
 ## 🔧 トラブルシューティング
 
