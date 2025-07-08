@@ -14,7 +14,7 @@ alwaysApply: false
 ### gh CLI基本コマンド
 ```bash
 # Issue作成（積極的に実行）
-gh issue create --title "タイトル" --body "本文" --label "ラベル"
+gh issue create --title "タイトル" --body "本文" --label "enhancement"
 
 # Issue一覧
 gh issue list
@@ -40,12 +40,30 @@ gh pr create --title "タイトル" --body "本文"
 - `[fix] 地図表示のバグ修正`
 - `[docs] READMEの更新`
 
-### ラベル
+### 利用可能なラベル
+**🚨 重要：存在するラベルのみを使用してください**
+
 - `enhancement`: 新機能
 - `bug`: バグ
-- `documentation`: ドキュメント
+- `documentation`: ドキュメント  
 - `good first issue`: 初心者向け
 - `help wanted`: ヘルプ募集
+- `question`: 質問・情報要求
+- `duplicate`: 重複
+- `invalid`: 無効
+- `wontfix`: 対応予定なし
+
+### ラベル使用方法
+```bash
+# 単一ラベル
+gh issue create --title "タイトル" --body "本文" --label "enhancement"
+
+# 複数ラベル  
+gh issue create --title "タイトル" --body "本文" --label "enhancement,documentation"
+
+# ラベルなし（推奨：エラー回避）
+gh issue create --title "タイトル" --body "本文"
+```
 
 ### Issueテンプレート
 

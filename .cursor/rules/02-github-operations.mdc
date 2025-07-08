@@ -12,6 +12,11 @@ priority: 2
 
 ## ✅ gh CLIの積極的使用
 
+### 🚨 重要：ラベルエラーの回避
+**Issue作成時にラベルエラーが発生する場合は、ラベルなしで作成してください。**
+- 推奨：`gh issue create --title "タイトル" --body "本文"`
+- ラベルは後でGitHub UIで追加可能
+
 ### Issue作成の基本手順
 1. **認証確認**（必要な場合のみ）
 ```bash
@@ -20,7 +25,11 @@ gh auth status
 
 2. **Issue作成**（積極的に実行）
 ```bash
-gh issue create --title "タイトル" --body "本文" --label "ラベル"
+# 推奨：ラベルなし（エラー回避）
+gh issue create --title "タイトル" --body "本文"
+
+# または適切なラベル付き
+gh issue create --title "タイトル" --body "本文" --label "enhancement"
 ```
 
 3. **成功確認**
@@ -85,6 +94,18 @@ gh issue create --title "..." --body "..."
 
 ### 基本的なIssue作成
 ```bash
+# 推奨：ラベルなし版（エラー回避）
+gh issue create \
+  --title "[feat] CSVアップロード機能" \
+  --body "## 概要
+Streamlitを使用してCSVファイルアップロード機能を実装
+
+## 完了条件
+- [ ] file_uploaderウィジェットが動作する
+- [ ] CSVファイルのみアップロード可能
+- [ ] テストが通る"
+
+# ラベル付き版（オプション）
 gh issue create \
   --title "[feat] CSVアップロード機能" \
   --body "## 概要
@@ -94,18 +115,18 @@ Streamlitを使用してCSVファイルアップロード機能を実装
 - [ ] file_uploaderウィジェットが動作する
 - [ ] CSVファイルのみアップロード可能
 - [ ] テストが通る" \
-  --label "enhancement,priority-high"
+  --label "enhancement"
 ```
 
 ### 複数Issueの一括作成
 ```bash
-# Issue 1
+# Issue 1（推奨：ラベルなし）
 gh issue create --title "[feat] CSV読み込み機能" --body "..."
 
-# Issue 2  
+# Issue 2（推奨：ラベルなし）
 gh issue create --title "[feat] 地図表示機能" --body "..."
 
-# Issue 3
+# Issue 3（推奨：ラベルなし）
 gh issue create --title "[feat] ルート計算機能" --body "..."
 ```
 
