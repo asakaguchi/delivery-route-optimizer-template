@@ -9,13 +9,13 @@ alwaysApply: false
 ## デザイン原則
 - **Streamlitっぽさを排除**し、プロフェッショナルなUIを実現
 - Material Design 3のガイドラインに準拠
-- Lucide Iconsを使用（絵文字は使わない）
+- Ant Design Iconsを使用（絵文字は使わない）
 
 ## カスタムテーマの実装
 
 ```python
 import streamlit as st
-from streamlit_lucide import lucide
+from streamlit_antd_components import antd_menu, antd_tree, antd_alert
 
 # ページ設定
 st.set_page_config(
@@ -142,7 +142,8 @@ st.markdown("""
 # ヘッダー部分
 col1, col2 = st.columns([0.1, 0.9])
 with col1:
-    lucide("truck", size=32, color="#1a73e8")
+    # Material Design iconを使用
+    st.markdown(":material/local_shipping:", unsafe_allow_html=True)
 with col2:
     st.markdown('<h1 style="margin: 0;">配送ルート最適化システム</h1>', 
                 unsafe_allow_html=True)
@@ -154,7 +155,7 @@ with st.container():
     # アイコン付きセクションタイトル
     col1, col2 = st.columns([0.05, 0.95])
     with col1:
-        lucide("upload", size=20, color="#5f6368")
+        st.markdown(":material/upload:", unsafe_allow_html=True)
     with col2:
         st.markdown("### データアップロード")
     
@@ -175,7 +176,7 @@ if results:
         with st.container():
             col_icon, col_text = st.columns([0.2, 0.8])
             with col_icon:
-                lucide("map-pin", size=24, color="#1a73e8")
+                st.markdown(":material/location_on:", unsafe_allow_html=True)
             with col_text:
                 st.metric("配送先数", f"{len(points)}件")
     
@@ -183,7 +184,7 @@ if results:
         with st.container():
             col_icon, col_text = st.columns([0.2, 0.8])
             with col_icon:
-                lucide("route", size=24, color="#1a73e8")
+                st.markdown(":material/route:", unsafe_allow_html=True)
             with col_text:
                 st.metric("総距離", f"{total_distance:.1f} km")
     
@@ -191,24 +192,50 @@ if results:
         with st.container():
             col_icon, col_text = st.columns([0.2, 0.8])
             with col_icon:
-                lucide("clock", size=24, color="#1a73e8")
+                st.markdown(":material/schedule:", unsafe_allow_html=True)
             with col_text:
                 st.metric("推定時間", f"{estimated_time} 分")
 ```
 
 ## アイコン使用ガイド
 
-| 用途 | Lucideアイコン名 | 使用例 |
+### Material Design Icons（推奨）
+Streamlit のネイティブサポートを使用:
+
+| 用途 | Material Icon名 | 使用例 |
 |------|-----------------|--------|
-| アップロード | upload | ファイルアップロード |
-| 地図・位置 | map-pin, map | 配送先表示 |
-| ルート | route, navigation | ルート表示 |
-| 時間 | clock, timer | 時間表示 |
-| 設定 | settings, sliders | 設定画面 |
-| 実行 | play, zap | 実行ボタン |
-| 成功 | check-circle | 完了表示 |
-| エラー | alert-circle | エラー表示 |
-| 情報 | info | ヘルプ・情報 |
-| ダウンロード | download | 結果のダウンロード |
+| アップロード | upload | `:material/upload:` |
+| 地図・位置 | location_on, map | `:material/location_on:` |
+| ルート | route | `:material/route:` |
+| 時間 | schedule, timer | `:material/schedule:` |
+| 設定 | settings | `:material/settings:` |
+| 実行 | play_arrow | `:material/play_arrow:` |
+| 成功 | check_circle | `:material/check_circle:` |
+| エラー | error | `:material/error:` |
+| 情報 | info | `:material/info:` |
+| ダウンロード | download | `:material/download:` |
+| 配送 | local_shipping | `:material/local_shipping:` |
+
+### Ant Design Components（高度なUI）
+より複雑なUI要素には `streamlit-antd-components` を使用:
+
+```python
+from streamlit_antd_components import antd_menu, antd_tree, antd_alert
+
+# メニューにアイコン
+antd_menu(
+    items=[
+        {'label': 'ホーム', 'icon': 'house'},
+        {'label': '設定', 'icon': 'settings'},
+        {'label': 'ヘルプ', 'icon': 'question-circle'}
+    ]
+)
+
+# アラートにアイコン
+antd_alert(
+    message="処理が完了しました",
+    type="success",
+    icon=True
+)
 ```
 

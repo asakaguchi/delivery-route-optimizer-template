@@ -19,7 +19,7 @@ uv init
 uv python pin 3.11
 
 # 依存関係の追加
-uv add streamlit folium pandas numpy streamlit-lucide
+uv add streamlit folium pandas numpy streamlit-antd-components
 ```
 
 ## プロジェクト構造
@@ -91,7 +91,7 @@ uv init
 uv python pin 3.11
 
 # 依存関係の追加
-uv add streamlit folium pandas numpy streamlit-lucide
+uv add streamlit folium pandas numpy streamlit-antd-components
 ```
 
 ## プロジェクト構造
