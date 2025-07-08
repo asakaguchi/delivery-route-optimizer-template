@@ -5,15 +5,29 @@ alwaysApply: true
 
 # 開発ワークフローガイド
 
+## ⚠️ 重要：Issue実装の絶対ルール
+
+**「Issue #X から進めて」の指示には必ず `01-issue-driven-development.mdc` に従ってください。**
+
 ## GitHub Issue駆動開発
 
-### 基本フロー
+### 🔒 強制フロー（必須）
 1. **Issue選択**: 優先度とブロッカーを考慮して1つのIssueを選択
-2. **ブランチ作成**: `feature/issue-番号` または `fix/issue-番号`
-3. **TDD実装**: テストファーストで実装
+2. **ブランチ確認・作成**: 
+   - `git status` で現在のブランチを必ず確認
+   - mainブランチでの作業は絶対禁止
+   - `feature/issue-番号` または `fix/issue-番号` を作成
+3. **TDD実装**: 
+   - テストファーストは必須（実装前にテスト作成）
+   - Red→Green→Refactorサイクルを厳守
 4. **コミット**: Conventional Commits形式で頻繁にコミット
 5. **PR作成**: Issue番号を含むPRを作成
 6. **マージ**: レビュー完了後、Issueクローズ
+
+### 🚫 禁止事項
+- mainブランチでの直接実装
+- テスト未作成での実装
+- 複数Issueの同時実装
 
 ### Issue作成時の注意点
 - 09-task-decomposition.mdc の手法に従う
