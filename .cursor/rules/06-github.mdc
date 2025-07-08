@@ -6,6 +6,28 @@ alwaysApply: false
 
 # GitHub運用ガイド
 
+## 🚀 重要：gh CLIの積極的使用
+
+**GitHub Issue作成やPR作成の依頼には、gh CLIを積極的に使用してください。**
+詳細は `02-github-operations.mdc` を参照してください。
+
+### gh CLI基本コマンド
+```bash
+# Issue作成（積極的に実行）
+gh issue create --title "タイトル" --body "本文" --label "ラベル"
+
+# Issue一覧
+gh issue list
+
+# PR作成（積極的に実行）
+gh pr create --title "タイトル" --body "本文"
+```
+
+### 注意事項
+- **過度な権限チェックは不要**: 認証エラーが出たら対処するスタンス
+- **即座の実行**: 「権限があるかわからない」等の理由での拒否は避ける
+- **エラー時の対処**: 具体的な解決策を提示してリトライ
+
 ## Issue管理
 
 ### タイトル形式
